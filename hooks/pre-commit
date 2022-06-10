@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "Precommit hook is running..."
 USER_NAME="andrii_laptiiev"
 ESLINT_MOBILE="$(git rev-parse --show-toplevel)/mobile/node_modules/.bin/eslint"
@@ -18,9 +18,9 @@ valid_branch_regex="^(feature|bug|refactoring|hotfix)\/$USER_NAME\/[a-z0-9-]+$"
 
 message="
 \t\033[41m
-There is something wrong with your branch name. \n 
-Branch names in this project must adhere to this contract: \n 
-feature|bugfix|improvement|library|prerelease|release|hotfix/$USER_NAME/feature-name. \n 
+There is something wrong with your branch name. \n
+Branch names in this project must adhere to this contract: \n
+feature|bugfix|improvement|library|prerelease|release|hotfix/$USER_NAME/feature-name. \n
 Your commit will be rejected. You should rename your branch to a valid name and try again.
 \033[0m"
 
