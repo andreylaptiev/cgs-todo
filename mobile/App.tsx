@@ -1,20 +1,18 @@
-import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>We are Live!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import RootStack from './src/routes';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const queryClient = new QueryClient();
+
+const App = (): JSX.Element => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </QueryClientProvider>
+  );
+};
+
+export default App;
