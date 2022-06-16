@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import connectDB from "../config/database";
 import { graphqlHTTP } from "express-graphql";
@@ -11,6 +12,8 @@ const app = express();
 const router = new AppRouter(app);
 // Connect to MongoDB
 connectDB();
+
+app.use(cors());
 
 // Express configuration
 app.set("port", process.env.PORT || 5000);
