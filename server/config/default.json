@@ -1,5 +1,6 @@
 {
   "mongoURI": "mongodb+srv://andy:WyGgLuCGVrpkVxqW@cgstest.nlhnn.mongodb.net/cgstodo?retryWrites=true&w=majority",
   "jwtSecret": "jwtSecretToken",
-  "jwtExpiration": 360000
+  "jwtExpiration": 360000,
+  "userPasswordHashSault": 5
 }
