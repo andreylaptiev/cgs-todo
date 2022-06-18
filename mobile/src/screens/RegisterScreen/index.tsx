@@ -8,33 +8,30 @@ import {
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Formik, FormikValues } from 'formik';
-import { RootStackParamList } from '../../routes';
+import { Formik } from 'formik';
+import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
-import { Spacings } from '../../constants/theme';
+import { Colors, Spacings } from '../../constants/theme';
 import { container, input, title } from '../../styles/base';
+import { useMutation } from 'react-query';
+import { IUserRegister } from '../../types/user.type';
+import userService from '../../service/user.service';
+import registerValidation from '../../validation/register.validation';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+type Props = NativeStackScreenProps<IRootStackParamList, 'Register'>;
 
-type RegisterFormValues = {
-  username: string;
-  email: string;
-  password: string;
-  verifyPassword: string;
-};
-
-const RegisterScreen = ({ navigation }: Props): JSX.Element => {
-  const initialValues: RegisterFormValues = {
+const RegisterScreen = ({ navigation }: Props) => {
+  const initialValues: IUserRegister = {
     username: '',
     email: '',
     password: '',
     verifyPassword: '',
   };
 
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values);
-    navigation.navigate('Login');
-  };
+  const registerUser = useMutation(userService.register.bind(userService), {
+    onError: (err) => console.log(err),
+    onSuccess: () => navigation.navigate('Home'),
+  });
 
   return (
     <SafeAreaView style={container.default}>
@@ -43,9 +40,12 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values: IUserRegister) => registerUser.mutate(values)}
+        validationSchema={registerValidation}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({
+          handleChange, handleBlur, handleSubmit, values, errors, touched,
+        }) => (
           <View style={styles.form}>
             <Text>Username</Text>
             <TextInput
@@ -54,6 +54,9 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
               style={input.text}
               value={values.username}
             />
+            {(errors.username && touched.username) &&
+              <Text style={styles.errorText}>{errors.username}</Text>
+            }
             <Text>Email</Text>
             <TextInput
               onChangeText={handleChange('email')}
@@ -61,6 +64,9 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
               style={input.text}
               value={values.email}
             />
+            {(errors.email && touched.email) &&
+              <Text style={styles.errorText}>{errors.email}</Text>
+            }
             <Text>Password</Text>
             <TextInput
               onChangeText={handleChange('password')}
@@ -69,6 +75,9 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
               secureTextEntry={true}
               value={values.password}
             />
+            {(errors.password && touched.password) &&
+              <Text style={styles.errorText}>{errors.password}</Text>
+            }
             <Text>Verify password</Text>
             <TextInput
               onChangeText={handleChange('verifyPassword')}
@@ -77,6 +86,9 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
               secureTextEntry={true}
               value={values.verifyPassword}
             />
+            {(errors.verifyPassword && touched.verifyPassword) &&
+              <Text style={styles.errorText}>{errors.verifyPassword}</Text>
+            }
             <View style={styles.submit}>
               <Button
                 onPress={
@@ -96,6 +108,10 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: Colors.red,
+    marginBottom: Spacings.s12,
+  },
   form: {
     flexDirection: 'column',
     alignItems: 'center',

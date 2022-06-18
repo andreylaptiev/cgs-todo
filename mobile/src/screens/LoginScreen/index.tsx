@@ -8,26 +8,24 @@ import {
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Formik, FormikValues } from 'formik';
-import { RootStackParamList } from '../../routes';
+import { Formik } from 'formik';
+import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
 import { container, input, title } from '../../styles/base';
-import { Spacings } from '../../constants/theme';
+import { Colors, Spacings } from '../../constants/theme';
+import { IUserLogin } from '../../types/user.type';
+import userService from '../../service/user.service';
+import { useMutation } from 'react-query';
+import loginValidation from '../../validation/login.validation';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type Props = NativeStackScreenProps<IRootStackParamList, 'Login'>;
 
-type LoginFormValues = {
-  usernameEmail: string;
-  password: string;
-};
+const LoginScreen = ({ navigation }: Props) => {
+  const initialValues: IUserLogin = { username: '', password: '' };
 
-const LoginScreen = ({ navigation }: Props): JSX.Element => {
-  const initialValues: LoginFormValues = { usernameEmail: '', password: '' };
-
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values);
-    navigation.navigate('Register');
-  };
+  const loginUser = useMutation(userService.login.bind(userService), {
+    onSuccess: () => navigation.navigate('Home'),
+  });
 
   return (
     <SafeAreaView style={container.default}>
@@ -36,17 +34,23 @@ const LoginScreen = ({ navigation }: Props): JSX.Element => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values: IUserLogin) => loginUser.mutate(values)}
+        validationSchema={loginValidation}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({
+          handleChange, handleBlur, handleSubmit, values, errors, touched,
+        }) => (
           <View style={styles.form}>
-            <Text>Username / Email</Text>
+            <Text>Username</Text>
             <TextInput
-              onChangeText={handleChange('usernameEmail')}
-              onBlur={handleBlur('usernameEmail')}
+              onChangeText={handleChange('username')}
+              onBlur={handleBlur('username')}
               style={input.text}
-              value={values.usernameEmail}
+              value={values.username}
             />
+            {(errors.username && touched.username) &&
+              <Text style={styles.errorText}>{errors.username}</Text>
+            }
             <Text>Password</Text>
             <TextInput
               onChangeText={handleChange('password')}
@@ -55,6 +59,9 @@ const LoginScreen = ({ navigation }: Props): JSX.Element => {
               secureTextEntry={true}
               value={values.password}
             />
+            {(errors.password && touched.password) &&
+              <Text style={styles.errorText}>{errors.password}</Text>
+            }
             <View style={styles.submit}>
               <Button
                 onPress={
@@ -74,6 +81,10 @@ const LoginScreen = ({ navigation }: Props): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: Colors.red,
+    marginBottom: Spacings.s12,
+  },
   form: {
     flexDirection: 'column',
     alignItems: 'center',
