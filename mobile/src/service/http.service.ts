@@ -24,6 +24,12 @@ class HttpService {
     return `${this.baseUrl}/${this.apiVersion}/${url}`;
   }
 
+  private populateTokenToHeaderConfig() {
+    return {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    };
+  }
+
   private extractUrlAndDataFromConfig({
     // eslint-disable-next-line no-unused-vars
     data, url, ...configWithoutDataAndUrl
@@ -31,13 +37,26 @@ class HttpService {
     return configWithoutDataAndUrl;
   }
 
-  get(url: string) {
+  get(config: IConfig, withAuth=true) {
+    if (withAuth) {
+      config.headers = {
+        ...config.headers,
+        ...this.populateTokenToHeaderConfig(),
+      };
+    }
     return this.fetchingService.get(
-        this.getFullApiUrl(url),
+        this.getFullApiUrl(config.url),
+        this.extractUrlAndDataFromConfig(config),
     );
   }
 
-  post(config: IConfig) {
+  post(config: IConfig, withAuth=true) {
+    if (withAuth) {
+      config.headers = {
+        ...config.headers,
+        ...this.populateTokenToHeaderConfig(),
+      };
+    }
     return this.fetchingService.post(
         this.getFullApiUrl(config.url),
         config.data,
@@ -45,7 +64,13 @@ class HttpService {
     );
   }
 
-  put(config: IConfig) {
+  put(config: IConfig, withAuth=true) {
+    if (withAuth) {
+      config.headers = {
+        ...config.headers,
+        ...this.populateTokenToHeaderConfig(),
+      };
+    }
     return this.fetchingService.put(
         this.getFullApiUrl(config.url),
         config.data,
@@ -53,8 +78,17 @@ class HttpService {
     );
   }
 
-  delete(url: string) {
-    return this.fetchingService.delete(this.getFullApiUrl(url));
+  delete(config: IConfig, withAuth=true) {
+    if (withAuth) {
+      config.headers = {
+        ...config.headers,
+        ...this.populateTokenToHeaderConfig(),
+      };
+    }
+    return this.fetchingService.delete(
+        this.getFullApiUrl(config.url),
+        this.extractUrlAndDataFromConfig(config),
+    );
   }
 };
 

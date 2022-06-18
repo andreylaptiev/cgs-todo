@@ -7,11 +7,11 @@ class TodoService extends HttpService {
   }
 
   getAllTodo() {
-    return this.get('todos').then((res) => res.data);
+    return this.get({ url: 'todos' }).then((res) => res.data);
   }
 
   getOneTodo(id: string) {
-    return this.get(`todos/${id}`).then((res) => res.data);
+    return this.get({ url: `todos/${id}` }).then((res) => res.data);
   }
 
   createTodo(data: ITodoFormValues) {
@@ -23,7 +23,7 @@ class TodoService extends HttpService {
   }
 
   deleteTodo(id: string) {
-    return this.delete(`todos/delete/${id}`);
+    return this.delete({ url: `todos/delete/${id}` });
   }
 };
 
