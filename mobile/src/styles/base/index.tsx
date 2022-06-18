@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
-import { Colors, FontSize, Spacings } from '../../constants/theme';
-
-const width = Dimensions.get('window').width; // full width
+import { StyleSheet } from 'react-native';
+import { Colors, FontSize, Spacings, Width } from '../../constants/theme';
 
 export const button = StyleSheet.create({
   default: {
@@ -41,7 +39,7 @@ export const input = StyleSheet.create({
     borderWidth: 1,
     marginVertical: Spacings.s12,
     padding: Spacings.s8,
-    width: width * 0.8,
+    width: Width.pixel.px300,
   },
 });
 
