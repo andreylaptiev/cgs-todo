@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes';
+import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
 import { Spacings } from '../../constants/theme';
 import { container } from '../../styles/base';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Auth'>;
+type Props = NativeStackScreenProps<IRootStackParamList, 'Auth'>;
 
 const AuthScreen = ({ navigation }: Props): JSX.Element => {
   const navigateToLogin = () => navigation.navigate('Login');

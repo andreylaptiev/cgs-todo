@@ -9,14 +9,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from 'react-query';
 import { ITodoFormValues } from '../../types/todo.type';
 import todoService from '../../service/todo.service';
-import { RootStackParamList } from '../../routes';
+import IRootStackParamList from '../../types/route.type';
 import { container, title } from '../../styles/base';
 import { Spacings } from '../../constants/theme';
 import QUERY_KEYS from '../../constants/queryKeys';
 import { home } from '../../constants/routerKeys';
 import TodoForm from '../../components/TodoForm';
 
-export type Props = NativeStackScreenProps<RootStackParamList, 'CreateTodo'>;
+export type Props = NativeStackScreenProps<IRootStackParamList, 'CreateTodo'>;
 
 const CreateTodoScreen = ({ navigation }: Props) => {
   const initialValues: ITodoFormValues = {

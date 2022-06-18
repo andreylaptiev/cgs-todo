@@ -1,14 +1,14 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes';
+import IRootStackParamList from '../../types/route.type';
 import { container } from '../../styles/base';
 import { createTodo } from '../../constants/routerKeys';
 import Button from '../../components/common/Button';
 import TodoContainer from '../../components/TodoContainer';
 import { Spacings } from '../../constants/theme';
 
-export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>
+export type HomeProps = NativeStackScreenProps<IRootStackParamList, 'Home'>
 
 const HomeScreen = ({ navigation }: HomeProps) => {
   return (
