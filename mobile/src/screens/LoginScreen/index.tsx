@@ -4,19 +4,19 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
-import { container, input, title } from '../../styles/base';
-import { Colors, Spacings } from '../../constants/theme';
+import { container, title } from '../../styles/base';
+import { Spacings } from '../../constants/theme';
 import { IUserLogin } from '../../types/user.type';
 import userService from '../../service/user.service';
 import { useMutation } from 'react-query';
 import loginValidation from '../../validation/login.validation';
+import CustomTextInput from '../../components/common/CustomTextInput';
 
 type Props = NativeStackScreenProps<IRootStackParamList, 'Login'>;
 
@@ -41,27 +41,25 @@ const LoginScreen = ({ navigation }: Props) => {
           handleChange, handleBlur, handleSubmit, values, errors, touched,
         }) => (
           <View style={styles.form}>
-            <Text>Username</Text>
-            <TextInput
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.username}
+              field="username"
+              label="Username"
+              handleChange={handleChange}
+              handleBlur={handleBlur}
               value={values.username}
+              touched={touched.username}
             />
-            {(errors.username && touched.username) &&
-              <Text style={styles.errorText}>{errors.username}</Text>
-            }
-            <Text>Password</Text>
-            <TextInput
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.password}
+              field="password"
+              label="Password"
               secureTextEntry={true}
+              touched={touched.password}
               value={values.password}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
-            {(errors.password && touched.password) &&
-              <Text style={styles.errorText}>{errors.password}</Text>
-            }
             <View style={styles.submit}>
               <Button
                 onPress={
@@ -81,10 +79,6 @@ const LoginScreen = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  errorText: {
-    color: Colors.red,
-    marginBottom: Spacings.s12,
-  },
   form: {
     flexDirection: 'column',
     alignItems: 'center',
