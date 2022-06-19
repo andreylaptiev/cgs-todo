@@ -31,4 +31,9 @@ export interface ITodoFilter {
   title?: string;
   isPublic?: boolean;
   isCompleted?: boolean;
+  quantity: number;
+}
+
+export interface ITodoPaginator {
+  loadTodos: Function;
 }

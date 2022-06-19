@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginVertical: Spacings.s28,
   },
   logoutBtn: {
-    marginTop: Spacings.s12,
+    paddingBottom: Spacings.s20,
   },
   todoContainer: {
     paddingHorizontal: Spacings.s20,
