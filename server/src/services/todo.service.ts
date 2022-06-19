@@ -1,9 +1,9 @@
-import ITodo, { ITodoFilter } from "../types/todos.type";
+import ITodo, { ITodoPagination, ITodoParams } from "../types/todos.type";
 import Todo from "../models/Todo";
 
 export default class TodoService {
-    async findAll(filter: ITodoFilter) {
-        const query = await Todo.find(filter);
+    async findAll({ quantity }: ITodoPagination, filter: ITodoParams) {
+        const query = await Todo.find(filter).limit(quantity);
         return query;
     }
 
