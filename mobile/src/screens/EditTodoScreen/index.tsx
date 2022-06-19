@@ -3,17 +3,14 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import QUERY_KEYS from '../../constants/queryKeys';
 import todoService from '../../service/todo.service';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import IRootStackParamList from '../../types/route.type';
 import { container, title } from '../../styles/base';
 import TodoForm from '../../components/TodoForm';
 import { ITodo, ITodoFormValues } from '../../types/todo.type';
 import { home } from '../../constants/routerKeys';
 import { Spacings } from '../../constants/theme';
+import { IEditTodoScreenProps } from '../../types/screen.type';
 
-export type Props = NativeStackScreenProps<IRootStackParamList, 'EditTodo'>;
-
-const EditTodoScreen = ({ navigation, route }: Props) => {
+const EditTodoScreen = ({ navigation, route }: IEditTodoScreenProps) => {
   const queryClient = useQueryClient();
   const id = route.params.id;
   const { data } = useQuery<ITodo[]>(QUERY_KEYS.todos);
