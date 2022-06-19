@@ -31,9 +31,9 @@ const CreateTodoScreen = ({ navigation }: Props) => {
 
   const createTodo = useMutation(todoService.createTodo.bind(todoService), {
     onError: (err) => console.log(err),
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       queryClient.setQueryData(QUERY_KEYS.todos, data);
-      await queryClient.invalidateQueries(QUERY_KEYS.todos, {
+      queryClient.invalidateQueries(QUERY_KEYS.todos, {
         refetchActive: true,
         refetchInactive: true,
       });
