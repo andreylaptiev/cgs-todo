@@ -1,16 +1,9 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { useQuery } from 'react-query';
-import QUERY_KEYS from '../constants/queryKeys';
-import todoService from '../service/todo.service';
+import { ITodoFetched } from '../types/todo.type';
 import TodoElement from './TodoElement';
 
-const TodoContainer = () => {
-  const { data } = useQuery(
-      QUERY_KEYS.todos,
-      todoService.getAllTodo.bind(todoService),
-  );
-
+const TodoContainer = ({ data }: ITodoFetched) => {
   return (
     <>
       <FlatList

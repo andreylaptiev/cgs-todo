@@ -1,13 +1,17 @@
 import HttpService from './http.service';
-import { ITodo, ITodoFormValues } from '../types/todo.type';
+import { ITodo, ITodoFilter, ITodoFormValues } from '../types/todo.type';
+import { QueryFunctionContext } from 'react-query';
 
 class TodoService extends HttpService {
   constructor() {
     super();
   }
 
-  getAllTodo() {
-    return this.get({ url: 'todos' }).then((res) => res.data);
+  getAllTodo({
+    queryKey,
+  }: QueryFunctionContext<string | readonly unknown[], ITodoFilter>) {
+    return this.get({ url: 'todos', params: queryKey[1] })
+        .then((res) => res.data);
   }
 
   getOneTodo(id: string) {

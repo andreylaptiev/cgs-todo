@@ -17,7 +17,7 @@ class UserService extends HttpService {
   }
 
   async logout() {
-    return await this.delete({ url: 'user/delete' })
+    return await this.delete({ url: 'user/logout' })
         .then(() => localStorage.removeItem('token'));
   }
 };

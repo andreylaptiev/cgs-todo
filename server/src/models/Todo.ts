@@ -3,6 +3,10 @@ import { body } from "express-validator";
 import ITodo from "../types/todos.type";
 
 const todoSchema = new Schema<ITodo>({
+  userId: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true,
