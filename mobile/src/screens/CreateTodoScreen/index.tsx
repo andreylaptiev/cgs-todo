@@ -5,20 +5,17 @@ import {
   Text,
   View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from 'react-query';
 import { ITodoFormValues } from '../../types/todo.type';
 import todoService from '../../service/todo.service';
-import IRootStackParamList from '../../types/route.type';
 import { container, title } from '../../styles/base';
 import { Spacings } from '../../constants/theme';
 import QUERY_KEYS from '../../constants/queryKeys';
 import { home } from '../../constants/routerKeys';
 import TodoForm from '../../components/TodoForm';
+import { ICreateTodoScreenProps } from '../../types/screen.type';
 
-export type Props = NativeStackScreenProps<IRootStackParamList, 'CreateTodo'>;
-
-const CreateTodoScreen = ({ navigation }: Props) => {
+const CreateTodoScreen = ({ navigation }: ICreateTodoScreenProps) => {
   const initialValues: ITodoFormValues = {
     title: '',
     description: '',

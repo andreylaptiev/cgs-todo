@@ -6,9 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
-import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
 import { Spacings } from '../../constants/theme';
 import { container, title } from '../../styles/base';
@@ -17,10 +15,9 @@ import { IUserRegister } from '../../types/user.type';
 import userService from '../../service/user.service';
 import registerValidation from '../../validation/register.validation';
 import CustomTextInput from '../../components/common/CustomTextInput';
+import { IRegisterScreenProps } from '../../types/screen.type';
 
-type Props = NativeStackScreenProps<IRootStackParamList, 'Register'>;
-
-const RegisterScreen = ({ navigation }: Props) => {
+const RegisterScreen = ({ navigation }: IRegisterScreenProps) => {
   const initialValues: IUserRegister = {
     username: '',
     email: '',

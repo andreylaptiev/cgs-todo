@@ -1,25 +1,30 @@
 import { Response, Request } from "express";
-import { ITodoFilter } from "todos.type";
+import { ITodoParams, ITodoPagination, ITodoFilter } from "todos.type";
 import TodoService from "../services/todo.service";
 
 export class TodoController {
     constructor(private todoService: TodoService) {}
     async getAllTodo(req: Request, res: Response) {
         const userId = res.locals.user._id;
-        const filterParams: ITodoFilter = req.query;
-        const title = filterParams.title;
-        const filter: ITodoFilter = filterParams.isPublic === "true" ?
+        const params: ITodoParams = req.query;
+        const todoFilter: ITodoFilter = params.isPublic === "true" ?
         {
-            isPublic: filterParams.isPublic,
-            isCompleted: filterParams.isCompleted,
+            isPublic: params.isPublic,
+            isCompleted: params.isCompleted,
         } :
         {
             userId: userId,
-            isPublic: filterParams.isPublic,
-            isCompleted: filterParams.isCompleted,
+            isPublic: params.isPublic,
+            isCompleted: params.isCompleted,
         };
-        if (title) filter.title = { $regex: title, $options: "i" };
-        const todos = await this.todoService.findAll(filter);
+        const title = params.title;
+        if (title) todoFilter.title = { $regex: title, $options: "i" };
+        const paginationFilter: ITodoPagination = {
+            quantity: params.quantity || 2,
+        };
+        const todos = await this.todoService.findAll(
+            paginationFilter, todoFilter
+        );
         return todos;
     }
 

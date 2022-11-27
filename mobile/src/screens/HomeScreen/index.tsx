@@ -1,7 +1,5 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import IRootStackParamList from '../../types/route.type';
 import { container } from '../../styles/base';
 import { auth, createTodo } from '../../constants/routerKeys';
 import Button from '../../components/common/Button';
@@ -9,10 +7,9 @@ import { Spacings, Width } from '../../constants/theme';
 import userService from '../../service/user.service';
 import { useMutation } from 'react-query';
 import TodoFilter from '../../components/TodoFilter';
+import { IHomeScreenProps } from '../../types/screen.type';
 
-export type HomeProps = NativeStackScreenProps<IRootStackParamList, 'Home'>
-
-const HomeScreen = ({ navigation }: HomeProps) => {
+const HomeScreen = ({ navigation }: IHomeScreenProps) => {
   const logoutUser = useMutation(
       userService.logout.bind(userService),
       { onSuccess: () => navigation.navigate(auth) },
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
     marginVertical: Spacings.s28,
   },
   logoutBtn: {
-    marginTop: Spacings.s12,
+    paddingBottom: Spacings.s20,
   },
   todoContainer: {
     paddingHorizontal: Spacings.s20,

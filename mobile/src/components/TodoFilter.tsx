@@ -7,6 +7,8 @@ import todoService from '../service/todo.service';
 import { Spacings } from '../constants/theme';
 import TodoContainer from './TodoContainer';
 import { input } from '../styles/base';
+import TodoPaginator from './TodoPaginator';
+import env from '../constants/env';
 
 const TodoFilter = () => {
   const queryClient = useQueryClient();
@@ -14,6 +16,7 @@ const TodoFilter = () => {
     title: '',
     isPublic: false,
     isCompleted: false,
+    quantity: env.TODO_PAGINATION.quantity,
   });
 
   const { data } = useQuery(
@@ -27,6 +30,13 @@ const TodoFilter = () => {
       },
   );
 
+  const loadTodos = () => {
+    setFilter({
+      ...filter,
+      quantity: filter.quantity + env.TODO_PAGINATION.quantity,
+    });
+  };
+
   return (
     <>
       <View style={styles.filter}>
@@ -36,6 +46,7 @@ const TodoFilter = () => {
             ...filter,
             title: newText,
           })}
+          placeholder="Enter todo title..."
           style={input.text}
           value={filter.title}
         />
@@ -61,6 +72,7 @@ const TodoFilter = () => {
         />
       </View>
       <TodoContainer data={data} />
+      <TodoPaginator loadTodos={loadTodos} />
     </>
   );
 };

@@ -6,9 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
-import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
 import { container, title } from '../../styles/base';
 import { Spacings } from '../../constants/theme';
@@ -17,10 +15,9 @@ import userService from '../../service/user.service';
 import { useMutation } from 'react-query';
 import loginValidation from '../../validation/login.validation';
 import CustomTextInput from '../../components/common/CustomTextInput';
+import { ILoginScreenProps } from '../../types/screen.type';
 
-type Props = NativeStackScreenProps<IRootStackParamList, 'Login'>;
-
-const LoginScreen = ({ navigation }: Props) => {
+const LoginScreen = ({ navigation }: ILoginScreenProps) => {
   const initialValues: IUserLogin = { username: '', password: '' };
 
   const loginUser = useMutation(userService.login.bind(userService), {
