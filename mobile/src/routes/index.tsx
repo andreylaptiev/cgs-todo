@@ -9,23 +9,17 @@ import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CreateTodoScreen from '../screens/CreateTodoScreen';
 import EditTodoScreen from '../screens/EditTodoScreen';
+import IRootStackParamList from '../types/route.type';
 
-export type RootStackParamList = {
-  Auth: undefined;
-  Login: undefined;
-  Register: undefined;
-  Home: undefined;
-  CreateTodo: undefined;
-  EditTodo: { id: string};
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<IRootStackParamList>();
 
 const RootStack = () => {
+  const isAuth = localStorage.getItem('token');
+
   return (
     <Stack.Navigator
-      initialRouteName='Home'
-      screenOptions={{ headerShown: false }}
+      initialRouteName={isAuth ? 'Home' : 'Auth'}
+      screenOptions={{ headerShown: true }}
     >
       <Stack.Screen name={auth} component={AuthScreen} />
       <Stack.Screen name={login} component={LoginScreen} />

@@ -1,5 +1,6 @@
 export const Colors = {
   black: '#000',
+  red: '#ff0000',
   white: '#fff',
 };
 
@@ -19,7 +20,11 @@ export const Spacings = {
 export const Width = {
   percent: {
     p40: '40%',
+    p55: '55%',
     p60: '60%',
     p80: '80%',
+  },
+  pixel: {
+    px300: 300,
   },
 };

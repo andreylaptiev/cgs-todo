@@ -4,30 +4,28 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Formik, FormikValues } from 'formik';
-import { RootStackParamList } from '../../routes';
+import { Formik } from 'formik';
+import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
-import { container, input, title } from '../../styles/base';
+import { container, title } from '../../styles/base';
 import { Spacings } from '../../constants/theme';
+import { IUserLogin } from '../../types/user.type';
+import userService from '../../service/user.service';
+import { useMutation } from 'react-query';
+import loginValidation from '../../validation/login.validation';
+import CustomTextInput from '../../components/common/CustomTextInput';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type Props = NativeStackScreenProps<IRootStackParamList, 'Login'>;
 
-type LoginFormValues = {
-  usernameEmail: string;
-  password: string;
-};
+const LoginScreen = ({ navigation }: Props) => {
+  const initialValues: IUserLogin = { username: '', password: '' };
 
-const LoginScreen = ({ navigation }: Props): JSX.Element => {
-  const initialValues: LoginFormValues = { usernameEmail: '', password: '' };
-
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values);
-    navigation.navigate('Register');
-  };
+  const loginUser = useMutation(userService.login.bind(userService), {
+    onSuccess: () => navigation.navigate('Home'),
+  });
 
   return (
     <SafeAreaView style={container.default}>
@@ -36,24 +34,31 @@ const LoginScreen = ({ navigation }: Props): JSX.Element => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values: IUserLogin) => loginUser.mutate(values)}
+        validationSchema={loginValidation}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({
+          handleChange, handleBlur, handleSubmit, values, errors, touched,
+        }) => (
           <View style={styles.form}>
-            <Text>Username / Email</Text>
-            <TextInput
-              onChangeText={handleChange('usernameEmail')}
-              onBlur={handleBlur('usernameEmail')}
-              style={input.text}
-              value={values.usernameEmail}
+            <CustomTextInput
+              error={errors.username}
+              field="username"
+              label="Username"
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              value={values.username}
+              touched={touched.username}
             />
-            <Text>Password</Text>
-            <TextInput
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.password}
+              field="password"
+              label="Password"
               secureTextEntry={true}
+              touched={touched.password}
               value={values.password}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
             <View style={styles.submit}>
               <Button

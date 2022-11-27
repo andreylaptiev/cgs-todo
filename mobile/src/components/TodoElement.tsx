@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from 'react-query';
-import { RootStackParamList } from '../routes';
+import IRootStackParamList from '../types/route.type';
 import todoService from '../service/todo.service';
 import { ITodo } from '../types/todo.type';
 import Button from '../components/common/Button';
@@ -20,7 +20,7 @@ const TodoElement = ({
   isPublic,
 }: ITodo) => {
   const navigation = useNavigation<
-    NativeStackNavigationProp<RootStackParamList>
+    NativeStackNavigationProp<IRootStackParamList>
   >();
   const queryClient = useQueryClient();
 
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   todo: {
-    width: Width.percent.p60,
+    width: Width.percent.p55,
   },
   todoEl: {
     flexDirection: 'row',

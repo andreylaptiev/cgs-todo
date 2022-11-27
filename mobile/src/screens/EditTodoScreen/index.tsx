@@ -4,14 +4,14 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import QUERY_KEYS from '../../constants/queryKeys';
 import todoService from '../../service/todo.service';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes';
+import IRootStackParamList from '../../types/route.type';
 import { container, title } from '../../styles/base';
 import TodoForm from '../../components/TodoForm';
 import { ITodo, ITodoFormValues } from '../../types/todo.type';
 import { home } from '../../constants/routerKeys';
 import { Spacings } from '../../constants/theme';
 
-export type Props = NativeStackScreenProps<RootStackParamList, 'EditTodo'>;
+export type Props = NativeStackScreenProps<IRootStackParamList, 'EditTodo'>;
 
 const EditTodoScreen = ({ navigation, route }: Props) => {
   const queryClient = useQueryClient();

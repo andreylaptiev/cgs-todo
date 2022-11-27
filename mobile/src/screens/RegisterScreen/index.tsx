@@ -4,37 +4,34 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Formik, FormikValues } from 'formik';
-import { RootStackParamList } from '../../routes';
+import { Formik } from 'formik';
+import IRootStackParamList from '../../types/route.type';
 import Button from '../../components/common/Button';
 import { Spacings } from '../../constants/theme';
-import { container, input, title } from '../../styles/base';
+import { container, title } from '../../styles/base';
+import { useMutation } from 'react-query';
+import { IUserRegister } from '../../types/user.type';
+import userService from '../../service/user.service';
+import registerValidation from '../../validation/register.validation';
+import CustomTextInput from '../../components/common/CustomTextInput';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+type Props = NativeStackScreenProps<IRootStackParamList, 'Register'>;
 
-type RegisterFormValues = {
-  username: string;
-  email: string;
-  password: string;
-  verifyPassword: string;
-};
-
-const RegisterScreen = ({ navigation }: Props): JSX.Element => {
-  const initialValues: RegisterFormValues = {
+const RegisterScreen = ({ navigation }: Props) => {
+  const initialValues: IUserRegister = {
     username: '',
     email: '',
     password: '',
     verifyPassword: '',
   };
 
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values);
-    navigation.navigate('Login');
-  };
+  const registerUser = useMutation(userService.register.bind(userService), {
+    onError: (err) => console.log(err),
+    onSuccess: () => navigation.navigate('Home'),
+  });
 
   return (
     <SafeAreaView style={container.default}>
@@ -43,39 +40,50 @@ const RegisterScreen = ({ navigation }: Props): JSX.Element => {
       </View>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values: IUserRegister) => registerUser.mutate(values)}
+        validationSchema={registerValidation}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({
+          handleChange, handleBlur, handleSubmit, values, errors, touched,
+        }) => (
           <View style={styles.form}>
-            <Text>Username</Text>
-            <TextInput
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.username}
+              field="username"
+              label="Username"
+              handleChange={handleChange}
+              handleBlur={handleBlur}
               value={values.username}
+              touched={touched.username}
             />
-            <Text>Email</Text>
-            <TextInput
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.email}
+              field="email"
+              label="Email"
+              handleChange={handleChange}
+              handleBlur={handleBlur}
               value={values.email}
+              touched={touched.email}
             />
-            <Text>Password</Text>
-            <TextInput
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.password}
+              field="password"
+              label="Password"
               secureTextEntry={true}
+              touched={touched.password}
               value={values.password}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
-            <Text>Verify password</Text>
-            <TextInput
-              onChangeText={handleChange('verifyPassword')}
-              onBlur={handleBlur('verifyPassword')}
-              style={input.text}
+            <CustomTextInput
+              error={errors.verifyPassword}
+              field="verifyPassword"
+              label="Verify password"
               secureTextEntry={true}
+              touched={touched.verifyPassword}
               value={values.verifyPassword}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
             />
             <View style={styles.submit}>
               <Button
