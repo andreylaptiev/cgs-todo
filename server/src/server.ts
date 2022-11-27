@@ -1,24 +1,29 @@
-import bodyParser from "body-parser";
 import express from "express";
+import cors from "cors";
 
 import connectDB from "../config/database";
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 import AppRouter from "./routes";
 import axios from "axios";
+import errorHandler from "./middleware/errorHandler";
 
 const app = express();
 const router = new AppRouter(app);
 // Connect to MongoDB
 connectDB();
 
+app.use(cors());
+
 // Express configuration
 app.set("port", process.env.PORT || 5000);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 router.init();
 
+// Error handling middleware
+app.use(errorHandler);
 
 // TODO: Move that to model GraphQL
 const schema = buildSchema(`

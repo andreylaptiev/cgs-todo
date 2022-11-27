@@ -1,18 +1,13 @@
-import { Document, Model, model, Schema } from "mongoose";
-// TODO: Use it as an example
-/**
- * Interface to model the User Schema for TypeScript.
- * @param email:string
- * @param password:string
- * @param avatar:string
- */
-export interface IUser extends Document {
-  email: string;
-  password: string;
-  avatar: string;
-}
+import { model, Schema } from "mongoose";
+import { body } from "express-validator";
+import IUser from "../types/users.type";
 
-const userSchema: Schema = new Schema({
+const userSchema = new Schema<IUser>({
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
   email: {
     type: String,
     required: true,
@@ -21,16 +16,21 @@ const userSchema: Schema = new Schema({
   password: {
     type: String,
     required: true
-  },
-  avatar: {
-    type: String
-  },
-  date: {
-    type: Date,
-    default: Date.now
   }
 });
 
-const User: Model<IUser> = model("User", userSchema);
+export const userSchemaValidation = [
+  body(["username", "email", "password"])
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage("Required field is empty"),
+  body("username")
+    .isAlphanumeric()
+    .withMessage("Username can contain only letters and numbers"),
+  body("email")
+    .isEmail()
+    .withMessage("Not valid Email address"),
+];
+
+const User = model<IUser>("User", userSchema);
 
 export default User;

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "=============================================================================================================="
 echo "Hook setupping has been started..."
@@ -6,7 +6,7 @@ echo "Hook setupping has been started..."
 
 case "$OSTYPE" in
   solaris*) current_os="SOLARIS" ;;
-  darwin*)  current_os="OSX" ;; 
+  darwin*)  current_os="OSX" ;;
   linux*)   current_os="LINUX" ;;
   bsd*)     current_os="BSD" ;;
   msys*)    current_os="WINDOWS" ;;
